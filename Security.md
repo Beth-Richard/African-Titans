@@ -5,15 +5,12 @@ Project: Live Student Campus Hub
 Institution: University of Wolverhampton
 Sprint: MVP – Sprint 1
 
-⸻
-
 1. Security Philosophy
 
 Security is treated as a core requirement of the Live Student Campus Hub. Given that the platform handles student accounts, job data, accommodation listings, transport APIs, and personal preferences, data protection and system integrity are critical.
 
 The system will follow a security-by-design approach from the beginning of development.
 
-⸻
 
 2. Key Security Assets
 
@@ -27,7 +24,6 @@ The following assets require protection:
 	•	Cloud infrastructure (AWS environment)
 	•	Database contents (MongoDB + PostgreSQL)
 
-⸻
 
 3. Identified Threats
 
@@ -43,7 +39,6 @@ Potential threats include:
 	•	GDPR non-compliance
 	•	Privilege escalation (student accessing admin features)
 
-⸻
 
 4. Authentication & Session Security
 
@@ -58,7 +53,6 @@ Security controls:
 	•	Passwords (if locally stored) must be hashed using bcrypt
 	•	Multi-factor authentication considered for admin accounts
 
-⸻
 
 5. Role-Based Access Control (RBAC)
 
@@ -77,7 +71,6 @@ Admin
 
 All authorization checks must occur server-side.
 
-⸻
 
 6. API & Integration Security
 
@@ -94,7 +87,6 @@ Security controls:
 	•	Input validation on all external data
 	•	Error handling without exposing sensitive details
 
-⸻
 
 7. Database Security
 
@@ -106,7 +98,6 @@ MongoDB + PostgreSQL must implement:
 	•	Regular backups
 	•	Audit logs for sensitive operations
 
-⸻
 
 8. GDPR & Data Privacy
 
@@ -119,7 +110,6 @@ Measures include:
 	•	Secure storage of personal data
 	•	Encryption at rest and in transit
 
-⸻
 
 9. Cloud & Infrastructure Security (AWS)
 	•	Use IAM roles with least privilege principle
@@ -128,7 +118,6 @@ Measures include:
 	•	Automatic backups
 	•	Secure environment variable storage
 
-⸻
 
 10. Security Review Requirement
 
