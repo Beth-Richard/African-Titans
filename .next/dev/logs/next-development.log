@@ -1,0 +1,5 @@
+[00:00:03.797] Server  LOG     ✓ Ready in 3.3s
+[00:00:37.729] Server  LOG     ○ Compiling / ...
+[00:00:42.263] Browser WARN    Image with src "/images/campus-wolverhampton.jpg" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[00:00:42.526] Browser WARN    Image with src "/images/campus-walsall.jpg" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
+[00:00:42.526] Browser WARN    Image with src "/images/campus-telford.jpg" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
