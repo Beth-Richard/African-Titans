@@ -1,0 +1,62 @@
+📌 Project Proposal – Student Local Jobs Board
+
+This is my current understanding of the direction for the project, as there does not appear to be a formalised plan in place yet.
+To ensure we can move forward productively, I’ve outlined a proposed MVP structure below.
+
+⸻
+
+🎯 Goal
+Create a web platform that helps students at:
+	•	Wolverhampton
+	•	Telford
+	•	Walsall
+
+find current local part-time and casual jobs.
+
+⸻
+
+🔹 MVP Scope (Simple & Achievable)
+	•	Students can browse jobs
+	•	Filter by campus + job type
+	•	Click an external apply link
+	•	Employers/admin can post jobs
+	•	Admin approval required before jobs go live
+
+Not included in MVP:
+	•	CV uploads / in-app applications
+	•	Messaging
+	•	Notifications
+	•	Complex matching systems
+	•	Overengineering
+
+⸻
+
+🔹 Tech Suggestion (Basic & Safe)
+	•	Frontend: React or simple HTML/CSS (Bootstrap acceptable)
+	•	Backend: Node.js (Express) or Python (Flask/Django) — team preference
+	•	Database: PostgreSQL (recommended) or MySQL 8
+
+⸻
+
+🔹 Team Roles (Proposed)
+	•	Me → Database design (ERD, schema, constraints, seed data, example queries)
+	•	Backend → API endpoints
+	•	Frontend → User Interface
+	•	Project coordination → Task tracking & delivery
+
+⸻
+
+⏳ Decision Window
+If there are no objections or suggested changes within 24 hours (by tomorrow 1pm),
+I will proceed with this as the agreed MVP plan so we can move forward and have progress ready for Monday.
+
+Please respond before 1pm tomorrow if you want changes. Sat 28th 
+a i will be creating the below. 
+
+⸻
+
+📦 My Deliverables (Database Analyst)
+	•	ERD diagram
+	•	SQL schema
+	•	Seed data
+	•	Example queries
