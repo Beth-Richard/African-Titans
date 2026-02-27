@@ -1,0 +1,104 @@
+Job Opportunities MVP Prototype  – Database Structure Proposal
+University of Wolverhampton Student Engagement Project
+
+Nico Bowen - Database Analyst suggestions 
+
+TEAM NOTES: PLEASE LEAVE SUGGESTIONS AT BOTTOM EDITED
+
+1. Overview
+The purpose of this proposal is to outline the core database structure for our Job Opportunities App, designed to support Wolverhampton University students in finding relevant employment.
+The app aims to reduce financial stress and increase student engagement by connecting students with suitable work opportunities aligned to their studies and lifestyle.
+
+2. Core Database Tables
+Table Name	Key Fields	Purpose / Notes
+
+Jobs	
+
+JobID, Title, Description, Type (FT/PT/Seasonal), FieldOfStudy, Salary, Location, AvgTravelTime, RemoteOption, ApplicationDeadline, CompanyID	Stores all available job listings
+
+Companies	
+
+CompanyID, Name, Industry, Location, ContactDetails, Description, Website	Holds employer and company information
+
+Students
+
+StudentID, UniEmail, Course, YearOfStudy, MaxTravelTime, WorkPreferences, Skills	Contains student profiles and preferences
+
+Applications	
+
+ApplicationID, StudentID, JobID, DateApplied, Status	Records which student has applied for which job
+
+Admins	
+
+AdminID, Name, Email, Role	Used to control and manage administrative access
+
+Feedback (optional)	
+
+FeedbackID, StudentID, JobID, Rating, Comments	Gathers feedback after job applications or experience
+
+3. Relationships Overview
+
+One Company can post many Jobs
+
+A Student can apply to many Jobs, and each Job can receive many Applications (many-to-many relationship)
+
+Admins oversee Students, Companies, and Jobs
+
+
+4. User Roles & Access Controls
+
+Role	Responsibilities	Access Scope (CRUD)
+
+Student	Create/Edit profile, search & apply for jobs, view application status, give feedback	Read/Write on 
+
+Students, Applications, Feedback
+
+Company	Create/Edit company profile, post/edit jobs, review applicants, update status	Read/Write on Companies, 
+
+Jobs, Applications (own only)
+
+Admin	Manage all data, oversee job postings, moderate users, generate reports	Full Create/Read/Update/Delete on 
+all tables
+
+(CRUD = Create, Read, Update, Delete)
+
+
+5. Example Workflow
+
+
+[Student]
+   │
+   ▼
+[Browse Jobs] ─▶ [Apply for Job] ─▶ [Applications Table]
+   │                          │
+   ▼                          ▼
+[Save Job / Give Feedback]    [Employer Reviews Application]
+   │                                   │
+   ▼                                   ▼
+    [Reports & Engagement Data for Admins]
+
+
+
+
+
+6. MVP (Minimum Viable Product) Focus
+For the initial prototype:
+
+
+Implement Jobs, Companies, Students, and Applications tables.
+
+Build role-based access control (Student, Company, Admin) for data security.
+
+Enable search, filtering, and application tracking.
+
+Add simple analytics later for engagement tracking.
+
+Next Step:
+
+Review with the project team to agree on final table fields and relationships before creating the initial database 
+
+schema and connecting it to the prototype app
+
+
+TEAM SUGGESTIONS: 
+Consider adding a “Saved Jobs” feature where students can bookmark job opportunities they are interested in but are not ready to apply for yet.
