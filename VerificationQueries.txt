@@ -1,0 +1,48 @@
+Queries for evidence (Verification) 
+
+
+
+// Show all jobs 
+
+SELECT job_id, title, status, campus_id, remote_type, location_text 
+FROM jobs 
+ORDER BY job_id;
+
+---------------------------------------
+
+// Students Visual (approved only) 
+
+SELECT job_id, title, status, posted_at 
+FROM jobs
+WHERE status = 'approved'
+ORDER BY posted_at DESC; 
+
+--------------------------------------
+
+// Admin Visual (pending) 
+
+SELECT job_id, title, status
+FROM jobs 
+WHERE status = 'pending' 
+ORDER BY posted_at DESC; 
+
+--------------------------------------
+
+// Approve a pending job (workflow) 
+
+UPDATE jobs SET status='approved' WHERE job_id=3; 
+
+INSERT INTO job_moderation (job_id, admin_user_id, decision, reason)
+VALUES (3, 1, 'approved', 'Approved during sprint demo test.'); 
+
+// Then Verify the approved job 
+
+SELECT moderation_id, job_id, admin_user_id, decision, decided_at
+FROM job_moderation
+ORDER BY moderation_id DESC;
+
+// Verify better 
+
+SELECT job, title, status, moderation_id, job_id, admin_user_id, decision, decided_at
+FROM job_moderation, jobs
+ORDER BY moderation_id DESC;
