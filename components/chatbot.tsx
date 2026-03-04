@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react"
 import { MessageCircle, Send, X, Bot, User } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { getChatbotResponse } from "@/lib/data"
+import { getChatbotResponse } from "@/lib/chatbot"; // import { getChatbotResponse } from "@/lib/data"
 
 interface Message {
   id: string

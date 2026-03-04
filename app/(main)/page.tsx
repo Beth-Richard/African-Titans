@@ -1,7 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { Briefcase, Building2, Calendar, ArrowRight, MapPin, Users, Star } from "lucide-react"
-import { getApprovedJobs, getUpcomingEvents } from "@/lib/data"
+import { getApprovedJobs} from "@/lib/data"
 
 function StatCard({ value, label }: { value: string; label: string }) {
   return (
@@ -41,9 +41,9 @@ function FeatureCard({
   )
 }
 
-export default function HomePage() {
-  const jobs = getApprovedJobs()
-  const events = getUpcomingEvents()
+export default async function HomePage() {
+  const jobs = await getApprovedJobs()
+  // const events = getUpcomingEvents()
   const recentJobs = jobs.slice(0, 3)
 
   return (
@@ -94,7 +94,6 @@ export default function HomePage() {
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-8 lg:grid-cols-4">
           <StatCard value={`${jobs.length}+`} label="Active Jobs" />
           <StatCard value="3" label="Campuses" />
-          <StatCard value={`${events.length}`} label="Upcoming Events" />
           <StatCard value="1,200+" label="Students Served" />
         </div>
       </section>
@@ -122,12 +121,6 @@ export default function HomePage() {
             title="Accommodation"
             description="Find student halls, private rentals, and shared houses near your campus with verified listings."
             href="/accommodation"
-          />
-          <FeatureCard
-            icon={Calendar}
-            title="Campus Events"
-            description="Stay updated with career fairs, workshops, social events, and wellbeing activities across all campuses."
-            href="/events"
           />
         </div>
       </section>
