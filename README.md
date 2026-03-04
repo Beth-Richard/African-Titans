@@ -9,5 +9,5 @@ Roger Mbuton Ndum, 2458389, Security Consultant & Project Manager
 Ali Salih, 2416665, Database Analyst & Business Analyst
 Oladele Wasiu Shina, 2442387, Security Consultant & Software Developer
 Malik Ashiru, 2370207, Software Developer & Project Manager
-Nico Bowen, 2556698, Database Analyst & Security Consultant
-divine Oti, 2325154, Software Developer & Business Anlyst
+Nico Bowen, 2556698, Database Analyst & Software Developer
+Divine Oti, 2325154, Software Developer & Business Anlyst
