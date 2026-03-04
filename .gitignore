@@ -1,1 +1,23 @@
-node_modules
+#DEPENDANCIES
+   node_modules/
+
+   #Next.js build output
+      .next/
+      out/
+
+      #IDE files 
+      .vs/ 
+      .vscode/ 
+
+     # enviorment variables
+        #.env.local
+        #.env.development.local
+        #.env.test.local
+        #.env.*.local    - local only so not ignored by default - normal safety measures would not have this on git. 
+
+        #logs 
+        log
+
+        #OS junk 
+        .DS_Store
+        Thumbs.db

@@ -1,0 +1,552 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Mar 04, 2026 at 11:55 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+--
+-- Database: `student_campus_hub`
+--
+CREATE DATABASE IF NOT EXISTS `student_campus_hub` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `student_campus_hub`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `campuses`
+--
+
+CREATE TABLE `campuses` (
+  `campus_id` bigint(20) UNSIGNED NOT NULL,
+  `campus_name` varchar(100) NOT NULL,
+  `city` varchar(100) NOT NULL,
+  `postcode_prefix` varchar(20) DEFAULT NULL,
+  `lat` decimal(9,6) DEFAULT NULL,
+  `lng` decimal(9,6) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `campuses`
+--
+
+INSERT INTO `campuses` (`campus_id`, `campus_name`, `city`, `postcode_prefix`, `lat`, `lng`) VALUES
+(1, 'Wolverhampton', 'Wolverhampton', 'WV', 52.586200, -2.128600),
+(2, 'Telford', 'Telford', 'TF', 52.678400, -2.445300),
+(3, 'Walsall', 'Walsall', 'WS', 52.586200, -1.982900);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `companies`
+--
+
+CREATE TABLE `companies` (
+  `company_id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `company_name` varchar(200) NOT NULL,
+  `website` varchar(300) DEFAULT NULL,
+  `verified_flag` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `companies`
+--
+
+INSERT INTO `companies` (`company_id`, `user_id`, `company_name`, `website`, `verified_flag`, `created_at`) VALUES
+(1, 5, 'Wolves Coffee Co.', 'https://example.com/wolvescoffee', 1, '2026-03-02 13:23:19'),
+(2, 6, 'Midlands Retail Group', 'https://example.com/midlandsretail', 1, '2026-03-02 13:23:19'),
+(3, 7, 'Telford Logistics Ltd', 'https://example.com/telfordlogistics', 0, '2026-03-02 13:23:19'),
+(4, 12, 'Wolves Coffee Co.', 'https://wolvescoffee.local', 1, '2026-03-03 12:37:44'),
+(5, 13, 'Midlands Retail Group', 'https://midlandsretail.local', 1, '2026-03-03 12:37:44'),
+(6, 14, 'Telford Logistics Ltd', 'https://telfordlogistics.local', 0, '2026-03-03 12:37:44'),
+(7, 15, 'City Bites Catering', 'https://citybites.local', 1, '2026-03-03 12:37:44'),
+(8, 16, 'Campus IT Services', 'https://campusit.local', 1, '2026-03-03 12:37:44'),
+(9, 17, 'FitWell Gyms', 'https://fitwell.local', 1, '2026-03-03 12:37:44'),
+(10, 18, 'Creative Wolverhampton', 'https://creativewv.local', 1, '2026-03-03 12:37:44'),
+(11, 19, 'Warehouse Nation', 'https://warehousenation.local', 0, '2026-03-03 12:37:44'),
+(12, 20, 'StudyBuddy Tutors', 'https://studybuddy.local', 1, '2026-03-03 12:37:44'),
+(13, 21, 'EventCrew West Midlands', 'https://eventcrew.local', 1, '2026-03-03 12:37:44'),
+(14, 22, 'CarePlus Support', 'https://careplus.local', 1, '2026-03-03 12:37:44'),
+(15, 23, 'TransportHub WM', 'https://transporthub.local', 1, '2026-03-03 12:37:44');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `jobs`
+--
+
+CREATE TABLE `jobs` (
+  `job_id` bigint(20) UNSIGNED NOT NULL,
+  `company_id` bigint(20) UNSIGNED NOT NULL,
+  `campus_id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(200) NOT NULL,
+  `description` text NOT NULL,
+  `employment_type` enum('part-time','casual','internship','temporary','contract') NOT NULL,
+  `pay_min` decimal(10,2) DEFAULT NULL,
+  `pay_max` decimal(10,2) DEFAULT NULL,
+  `currency` char(3) NOT NULL DEFAULT 'GBP',
+  `pay_type` enum('hourly','salary') NOT NULL,
+  `remote_type` enum('onsite','hybrid','remote') NOT NULL,
+  `location_text` varchar(200) DEFAULT NULL,
+  `postcode` varchar(20) DEFAULT NULL,
+  `lat` decimal(9,6) DEFAULT NULL,
+  `lng` decimal(9,6) DEFAULT NULL,
+  `apply_url` text NOT NULL,
+  `posted_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `expires_at` timestamp NULL DEFAULT NULL,
+  `status` enum('draft','pending','approved','rejected','closed') NOT NULL DEFAULT 'pending'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `jobs`
+--
+
+INSERT INTO `jobs` (`job_id`, `company_id`, `campus_id`, `title`, `description`, `employment_type`, `pay_min`, `pay_max`, `currency`, `pay_type`, `remote_type`, `location_text`, `postcode`, `lat`, `lng`, `apply_url`, `posted_at`, `expires_at`, `status`) VALUES
+(1, 1, 1, 'Barista (Part-time)', 'Serve customers, prepare drinks, maintain cleanliness. Student-friendly shifts.', 'part-time', 10.50, 12.00, 'GBP', 'hourly', 'onsite', 'Wolverhampton City Centre', 'WV1 1AA', 52.586500, -2.129000, 'https://example.com/apply/barista', '2026-03-02 13:23:19', '2026-03-23 13:23:19', 'rejected'),
+(2, 2, 3, 'Retail Assistant TESTING (Weekend)', 'Stock shelves, assist customers, operate tills. Weekend shifts available.', 'part-time', 10.00, 11.50, 'GBP', 'hourly', 'onsite', 'Walsall Town Centre', 'WS1 1AB', 52.585900, -1.983200, 'https://example.com/apply/retail-assistant', '2026-03-02 13:23:19', '2026-03-16 13:23:19', 'approved'),
+(3, 3, 2, 'Warehouse Picker/Packer', 'Pick and pack orders, light lifting, training provided.', 'temporary', 11.00, 13.50, 'GBP', 'hourly', 'onsite', 'Telford Industrial Estate', 'TF3 3AA', 52.676900, -2.448000, 'https://example.com/apply/warehouse', '2026-03-02 13:23:19', '2026-04-01 12:23:19', 'approved'),
+(4, 2, 1, 'Student Admin Assistant', 'Help with data entry, emails, scheduling. Good for business students.', 'part-time', 11.50, 12.50, 'GBP', 'hourly', 'hybrid', 'University of Wolverhampton – City Campus', 'WV1 1LY', 52.587000, -2.128000, 'https://example.com/apply/admin-assistant', '2026-03-02 13:23:19', '2026-03-30 12:23:19', 'approved'),
+(5, 1, 1, 'Social Media Assistant (Remote)', 'Create simple posts, schedule content, track engagement. Remote work.', 'internship', NULL, NULL, 'GBP', 'salary', 'remote', NULL, NULL, NULL, NULL, 'https://example.com/apply/social-remote', '2026-03-02 13:23:19', '2026-04-16 12:23:19', 'approved'),
+(6, 1, 1, 'Barista (Part-time)', 'Serve customers, prepare drinks, maintain cleanliness. Student-friendly shifts.', 'part-time', 10.50, 12.00, 'GBP', 'hourly', 'onsite', 'Wolverhampton City Centre', 'WV1 1AA', 52.586500, -2.129000, 'https://apply.local/jobs/1', '2026-02-21 12:37:45', '2026-03-24 00:00:00', 'approved'),
+(7, 4, 1, 'Kitchen Assistant', 'Prep food, wash-up, support chefs during busy lunch periods.', 'casual', 10.50, 11.50, 'GBP', 'hourly', 'onsite', 'Wolverhampton – City Campus', 'WV1 1LY', 52.587000, -2.128000, 'https://apply.local/jobs/2', '2026-02-24 12:37:45', '2026-03-17 00:00:00', 'approved'),
+(8, 2, 3, 'Retail Assistant (Weekend)', 'Stock shelves, assist customers, operate tills. Weekend shifts.', 'part-time', 10.00, 11.50, 'GBP', 'hourly', 'onsite', 'Walsall Town Centre', 'WS1 1AB', 52.585900, -1.983200, 'https://apply.local/jobs/3', '2026-02-19 12:37:45', '2026-03-23 00:00:00', 'approved'),
+(9, 3, 2, 'Warehouse Picker/Packer', 'Pick and pack orders, scan items, basic lifting. Training provided.', 'temporary', 11.00, 13.50, 'GBP', 'hourly', 'onsite', 'Telford Industrial Estate', 'TF3 3AA', 52.676900, -2.448000, 'https://apply.local/jobs/4', '2026-02-26 12:37:45', '2026-04-01 23:00:00', 'approved'),
+(10, 2, 1, 'Student Admin Assistant', 'Data entry, email handling, scheduling. Great for business students.', 'part-time', 11.50, 12.50, 'GBP', 'hourly', 'hybrid', 'University of Wolverhampton – City Campus', 'WV1 1LY', 52.587000, -2.128000, 'https://apply.local/jobs/5', '2026-02-28 12:37:45', '2026-03-30 23:00:00', 'approved'),
+(11, 1, 1, 'Social Media Assistant (Remote)', 'Create posts, schedule content, track engagement. Remote internship.', 'internship', NULL, NULL, 'GBP', 'salary', 'remote', NULL, NULL, NULL, NULL, 'https://apply.local/jobs/6', '2026-02-16 12:37:45', '2026-04-16 23:00:00', 'approved'),
+(12, 6, 1, 'Gym Receptionist', 'Front desk support, membership queries, basic admin.', 'part-time', 10.50, 11.50, 'GBP', 'hourly', 'onsite', 'Wolverhampton Science Park', 'WV10 9RU', 52.606000, -2.117000, 'https://apply.local/jobs/7', '2026-02-22 12:37:45', '2026-03-28 00:00:00', 'approved'),
+(13, 5, 1, 'IT Support Assistant', 'First-line support for students, lab setup, password resets.', 'part-time', 12.00, 13.00, 'GBP', 'hourly', 'onsite', 'MI Building, Wolverhampton', 'WV1 1LY', 52.587000, -2.128000, 'https://apply.local/jobs/8', '2026-02-25 12:37:45', '2026-03-21 00:00:00', 'approved'),
+(14, 8, 3, 'Night Shift Warehouse Operative', 'Loading, sorting, scanning parcels. Night premium included.', 'contract', 12.50, 14.50, 'GBP', 'hourly', 'onsite', 'Walsall Industrial Estate', 'WS2 8TJ', 52.600000, -1.980000, 'https://apply.local/jobs/9', '2026-03-01 12:37:45', '2026-04-06 23:00:00', 'approved'),
+(15, 7, 1, 'Graphic Design Assistant', 'Create social graphics and posters. Portfolio required.', 'internship', NULL, NULL, 'GBP', 'salary', 'hybrid', 'Remote / Wolverhampton', 'WV1', 52.586900, -2.128800, 'https://apply.local/jobs/10', '2026-02-27 12:37:45', '2026-04-11 23:00:00', 'approved'),
+(16, 9, 1, 'Peer Tutor (Computer Science)', 'Tutor first-year students in programming fundamentals.', 'casual', 13.00, 15.00, 'GBP', 'hourly', 'onsite', 'Alan Turing Building', 'WV1 1LY', 52.587000, -2.128000, 'https://apply.local/jobs/11', '2026-02-23 12:37:45', '2026-03-23 00:00:00', 'approved'),
+(17, 9, 2, 'Maths Tutor (Part-time)', 'Support maths workshops and 1:1 sessions.', 'part-time', 13.00, 16.00, 'GBP', 'hourly', 'hybrid', 'Telford Campus Library', 'TF2 9NT', 52.676600, -2.446600, 'https://apply.local/jobs/12', '2026-02-20 12:37:45', '2026-03-25 00:00:00', 'approved'),
+(18, 10, 1, 'Event Steward', 'Help with check-in, directions, and crowd flow for campus events.', 'casual', 11.00, 12.50, 'GBP', 'hourly', 'onsite', 'Wulfruna Street Arena', 'WV1 1AD', 52.588000, -2.129500, 'https://apply.local/jobs/13', '2026-03-02 12:37:45', '2026-03-15 00:00:00', 'approved'),
+(19, 10, 3, 'Event Crew (Weekend)', 'Setup/packdown equipment, assist exhibitors.', 'temporary', 11.50, 13.00, 'GBP', 'hourly', 'onsite', 'Walsall Campus', 'WS1 3BD', 52.585000, -1.983000, 'https://apply.local/jobs/14', '2026-02-18 12:37:45', '2026-03-18 00:00:00', 'approved'),
+(20, 11, 1, 'Care Support Worker (Evenings)', 'Support adults with daily living tasks. Training provided.', 'contract', 12.50, 14.00, 'GBP', 'hourly', 'onsite', 'Wolverhampton', 'WV1', 52.586900, -2.128800, 'https://apply.local/jobs/15', '2026-02-15 12:37:45', '2026-04-01 23:00:00', 'approved'),
+(21, 11, 3, 'Care Assistant (Weekend)', 'Weekend shifts for care support and companionship.', 'part-time', 12.00, 13.50, 'GBP', 'hourly', 'onsite', 'Walsall', 'WS1', 52.585300, -1.984000, 'https://apply.local/jobs/16', '2026-02-27 12:37:45', '2026-03-28 00:00:00', 'approved'),
+(22, 12, 2, 'Bus Station Assistant', 'Help customers, provide timetable info, support accessibility needs.', 'part-time', 11.00, 12.50, 'GBP', 'hourly', 'onsite', 'Telford Transport Hub', 'TF3 4AA', 52.677000, -2.447000, 'https://apply.local/jobs/17', '2026-02-25 12:37:45', '2026-03-21 00:00:00', 'approved'),
+(23, 12, 1, 'Travel Info Assistant (Hybrid)', 'Assist with travel enquiries via chat/email. Some remote shifts.', 'part-time', 11.00, 12.50, 'GBP', 'hourly', 'hybrid', 'Wolverhampton Transport Hub', 'WV1 1AA', 52.586900, -2.129000, 'https://apply.local/jobs/18', '2026-02-28 12:37:45', '2026-03-21 00:00:00', 'approved'),
+(24, 4, 1, 'Front of House (Evenings)', 'Customer service, table clearing, basic drinks prep.', 'part-time', 10.50, 12.00, 'GBP', 'hourly', 'onsite', 'Wolverhampton City Centre', 'WV1 2AA', 52.587200, -2.130200, 'https://apply.local/jobs/19', '2026-02-24 12:37:45', '2026-03-29 00:00:00', 'approved'),
+(25, 6, 3, 'Fitness Class Assistant', 'Support instructors, set up equipment, greet members.', 'casual', 11.00, 12.50, 'GBP', 'hourly', 'onsite', 'Walsall Fitness Studio', 'WS1 1QY', 52.585500, -1.983800, 'https://apply.local/jobs/20', '2026-02-22 12:37:45', '2026-03-25 00:00:00', 'approved'),
+(26, 2, 1, 'Customer Service Advisor', 'Handle customer queries, returns, and store support.', 'contract', 11.50, 13.00, 'GBP', 'hourly', 'onsite', 'Wolverhampton Retail Park', 'WV10 6QJ', 52.615000, -2.105000, 'https://apply.local/jobs/21', '2026-02-17 12:37:45', '2026-03-28 00:00:00', 'approved'),
+(27, 2, 3, 'Stockroom Assistant', 'Receive deliveries, organize stock, assist floor staff.', 'part-time', 10.50, 11.50, 'GBP', 'hourly', 'onsite', 'Walsall Retail Park', 'WS2 9XX', 52.612000, -1.982000, 'https://apply.local/jobs/22', '2026-02-25 12:37:45', '2026-03-18 00:00:00', 'approved'),
+(28, 8, 2, 'Forklift Trainee (Warehouse)', 'Training provided; support warehouse operations.', 'temporary', 11.50, 13.50, 'GBP', 'hourly', 'onsite', 'Telford Logistics Depot', 'TF3 3AA', 52.677000, -2.449000, 'https://apply.local/jobs/23', '2026-03-01 12:37:45', '2026-03-30 23:00:00', 'approved'),
+(29, 8, 1, 'Warehouse Admin', 'Label printing, paperwork, basic Excel tracking.', 'part-time', 11.50, 12.50, 'GBP', 'hourly', 'onsite', 'Wolverhampton Depot', 'WV10 7EL', 52.620000, -2.110000, 'https://apply.local/jobs/24', '2026-02-28 12:37:45', '2026-04-01 23:00:00', 'rejected'),
+(30, 5, 1, 'AV / Classroom Tech Runner', 'Setup projectors, troubleshoot classroom AV.', 'casual', 12.00, 13.00, 'GBP', 'hourly', 'onsite', 'Wolverhampton City Campus', 'WV1 1LY', 52.587000, -2.128000, 'https://apply.local/jobs/25', '2026-02-26 12:37:45', '2026-03-21 00:00:00', 'approved'),
+(31, 5, 2, 'Helpdesk Support (Remote Evenings)', 'Remote helpdesk ticket triage, password resets.', 'part-time', 12.00, 14.00, 'GBP', 'hourly', 'remote', NULL, NULL, NULL, NULL, 'https://apply.local/jobs/26', '2026-03-02 12:37:45', '2026-03-24 00:00:00', 'approved'),
+(32, 7, 1, 'Content Creator (Part-time)', 'Create reels, posters, newsletters for local businesses.', 'part-time', 12.00, 15.00, 'GBP', 'hourly', 'hybrid', 'Wolverhampton / Remote', 'WV1', 52.586900, -2.128800, 'https://apply.local/jobs/27', '2026-02-27 12:37:45', '2026-04-06 23:00:00', 'approved'),
+(33, 4, 3, 'Bar Staff (Casual)', 'Serve drinks at events and weekends. Training provided.', 'casual', 10.50, 12.50, 'GBP', 'hourly', 'onsite', 'Walsall Town Centre', 'WS1 1AB', 52.585900, -1.983200, 'https://apply.local/jobs/28', '2026-02-23 12:37:45', '2026-03-17 00:00:00', 'approved'),
+(34, 1, 1, 'Coffee Shop Supervisor (PT)', 'Lead shifts, handle cash-up, support training.', 'part-time', 12.50, 14.00, 'GBP', 'hourly', 'onsite', 'Wolverhampton City Centre', 'WV1 1AA', 52.586500, -2.129000, 'https://apply.local/jobs/29', '2026-02-13 12:37:45', '2026-04-01 23:00:00', 'approved'),
+(35, 6, 2, 'Personal Trainer Assistant', 'Support PT sessions, tidy equipment, greet clients.', 'casual', 11.00, 12.50, 'GBP', 'hourly', 'onsite', 'Telford Fitness Centre', 'TF2 9NT', 52.676600, -2.446600, 'https://apply.local/jobs/30', '2026-02-28 12:37:45', '2026-03-28 00:00:00', 'approved'),
+(36, 3, 2, 'Delivery Sorter', 'Sort parcels, scan items, maintain lane accuracy.', 'temporary', 11.00, 13.00, 'GBP', 'hourly', 'onsite', 'Telford Depot', 'TF3 3AA', 52.676900, -2.448000, 'https://apply.local/jobs/31', '2026-02-25 12:37:45', '2026-03-23 00:00:00', 'approved'),
+(37, 3, 2, 'Route Planner Intern', 'Assist dispatch, map routes, update delivery schedules.', 'internship', NULL, NULL, 'GBP', 'salary', 'hybrid', 'Telford Depot', 'TF3 3AA', 52.676900, -2.448000, 'https://apply.local/jobs/32', '2026-03-01 12:37:45', '2026-04-11 23:00:00', 'approved'),
+(38, 2, 1, 'Store Cleaner (Early Mornings)', 'Clean shop floor, restrooms, and staff areas.', 'part-time', 10.50, 11.00, 'GBP', 'hourly', 'onsite', 'Wolverhampton Retail Park', 'WV10 6QJ', 52.615000, -2.105000, 'https://apply.local/jobs/33', '2026-02-12 12:37:45', '2026-04-01 23:00:00', 'approved'),
+(39, 2, 3, 'Security Marshal (Evenings)', 'Monitor entrances, report incidents, assist customers.', 'contract', 12.00, 14.00, 'GBP', 'hourly', 'onsite', 'Walsall Retail Park', 'WS2 9XX', 52.612000, -1.982000, 'https://apply.local/jobs/34', '2026-02-21 12:37:45', '2026-03-28 00:00:00', 'approved'),
+(40, 10, 1, 'Careers Fair Assistant', 'Support employer stands, manage queues, run check-ins.', 'temporary', 11.50, 13.00, 'GBP', 'hourly', 'onsite', 'Wolverhampton Arena', 'WV1 1AD', 52.588000, -2.129500, 'https://apply.local/jobs/35', '2026-02-27 12:37:45', '2026-03-13 00:00:00', 'approved'),
+(41, 7, 1, 'Junior Marketing Assistant', 'Email campaigns, simple analytics, posting schedule.', 'internship', NULL, NULL, 'GBP', 'salary', 'hybrid', 'Wolverhampton / Remote', 'WV1', 52.586900, -2.128800, 'https://apply.local/jobs/36', '2026-02-28 12:37:45', '2026-04-26 23:00:00', 'approved'),
+(42, 9, 3, 'Study Skills Coach', '1:1 sessions: referencing, essay planning, time management.', 'part-time', 13.00, 15.00, 'GBP', 'hourly', 'onsite', 'Walsall Campus', 'WS1 3BD', 52.585000, -1.983000, 'https://apply.local/jobs/37', '2026-02-22 12:37:45', '2026-04-06 23:00:00', 'approved'),
+(43, 11, 1, 'Care Coordinator Admin', 'Scheduling care visits, updating records, phone support.', 'contract', 12.50, 14.50, 'GBP', 'hourly', 'onsite', 'Wolverhampton', 'WV1', 52.586900, -2.128800, 'https://apply.local/jobs/38', '2026-02-23 12:37:45', '2026-04-01 23:00:00', 'approved'),
+(44, 5, 1, 'Junior QA Tester (Remote)', 'Test web features, log bugs, basic regression testing.', 'internship', NULL, NULL, 'GBP', 'salary', 'remote', NULL, NULL, NULL, NULL, 'https://apply.local/jobs/39', '2026-02-25 12:37:45', '2026-05-01 23:00:00', 'approved'),
+(45, 6, 1, 'Gym Floor Assistant', 'Support members, tidy equipment, enforce safety rules.', 'part-time', 11.00, 12.50, 'GBP', 'hourly', 'onsite', 'Wolverhampton Gym', 'WV2 4AA', 52.580000, -2.140000, 'https://apply.local/jobs/40', '2026-03-02 12:37:45', '2026-03-28 00:00:00', 'approved'),
+(46, 4, 1, 'Café Shift Leader', 'Manage shift handover, stock, basic staff coordination.', 'contract', 12.50, 14.00, 'GBP', 'hourly', 'onsite', 'Wolverhampton City Centre', 'WV1 2AA', 52.587200, -2.130200, 'https://apply.local/jobs/41', '2026-02-11 12:37:45', '2026-03-30 23:00:00', 'approved'),
+(47, 1, 1, 'Coffee Roastery Assistant', 'Pack beans, label, help with small-batch roasts.', 'part-time', 11.00, 12.00, 'GBP', 'hourly', 'onsite', 'Wolverhampton', 'WV10', 52.610000, -2.120000, 'https://apply.local/jobs/42', '2026-02-17 12:37:45', '2026-03-29 00:00:00', 'approved'),
+(48, 12, 3, 'Station Customer Support', 'Help passengers with ticketing and accessibility.', 'part-time', 11.00, 12.50, 'GBP', 'hourly', 'onsite', 'Walsall Bus Station', 'WS1 1AB', 52.585900, -1.983200, 'https://apply.local/jobs/43', '2026-02-25 12:37:45', '2026-03-21 00:00:00', 'approved'),
+(49, 8, 1, 'Inventory Counter', 'Cycle counts, stock accuracy checks, report variances.', 'temporary', 11.50, 13.00, 'GBP', 'hourly', 'onsite', 'Wolverhampton Depot', 'WV10 7EL', 52.620000, -2.110000, 'https://apply.local/jobs/44', '2026-02-28 12:37:45', '2026-03-24 00:00:00', 'approved'),
+(50, 3, 2, 'Warehouse Supervisor Assistant', 'Support supervisors, coordinate lanes, basic reporting.', 'contract', 13.50, 15.50, 'GBP', 'hourly', 'onsite', 'Telford Depot', 'TF3 3AA', 52.676900, -2.448000, 'https://apply.local/jobs/45', '2026-03-02 12:37:45', '2026-04-01 23:00:00', 'approved'),
+(51, 2, 1, 'Visual Merchandising Helper', 'Support displays, signage, and promotions.', 'casual', 11.00, 12.50, 'GBP', 'hourly', 'onsite', 'Wolverhampton Retail Park', 'WV10 6QJ', 52.615000, -2.105000, 'https://apply.local/jobs/46', '2026-02-19 12:37:45', '2026-03-21 00:00:00', 'approved'),
+(52, 7, 1, 'Copywriter (Remote)', 'Write product descriptions, short blog posts, social captions.', 'part-time', 12.00, 16.00, 'GBP', 'hourly', 'remote', NULL, NULL, NULL, NULL, 'https://apply.local/jobs/47', '2026-02-22 12:37:45', '2026-04-21 23:00:00', 'approved'),
+(53, 5, 3, 'IT Lab Assistant', 'Help keep labs tidy, assist students with logins and printing.', 'part-time', 12.00, 13.00, 'GBP', 'hourly', 'onsite', 'Walsall Campus IT Labs', 'WS1 3BD', 52.585000, -1.983000, 'https://apply.local/jobs/48', '2026-02-24 12:37:45', '2026-03-23 00:00:00', 'approved'),
+(54, 11, 3, 'Care Support (Nights)', 'Night support worker, monitoring, reporting, companionship.', 'contract', 13.00, 15.00, 'GBP', 'hourly', 'onsite', 'Walsall', 'WS1', 52.585300, -1.984000, 'https://apply.local/jobs/49', '2026-02-26 12:37:45', '2026-03-28 00:00:00', 'pending'),
+(55, 10, 2, 'Conference Helper', 'Assist with registration and session timing at conferences.', 'temporary', 11.50, 13.00, 'GBP', 'hourly', 'onsite', 'Telford Campus', 'TF2 9NT', 52.676600, -2.446600, 'https://apply.local/jobs/50', '2026-03-01 12:37:45', '2026-03-12 00:00:00', 'approved'),
+(56, 9, 1, 'Library Assistant', 'Shelving, customer service, help students locate resources.', 'part-time', 10.50, 11.50, 'GBP', 'hourly', 'onsite', 'Wolverhampton Library', 'WV1 1LY', 52.587000, -2.128000, 'https://apply.local/jobs/51', '2026-02-11 12:37:45', '2026-03-17 00:00:00', 'approved'),
+(57, 9, 1, 'Research Assistant (Intern)', 'Support research data cleanup and simple analysis.', 'internship', NULL, NULL, 'GBP', 'salary', 'hybrid', 'Wolverhampton Campus', 'WV1 1LY', 52.587000, -2.128000, 'https://apply.local/jobs/52', '2026-02-27 12:37:45', '2026-05-01 23:00:00', 'approved'),
+(58, 2, 3, 'Cash Office Assistant', 'End-of-day cash reconciliation and reports.', 'part-time', 11.50, 12.50, 'GBP', 'hourly', 'onsite', 'Walsall Retail Park', 'WS2 9XX', 52.612000, -1.982000, 'https://apply.local/jobs/53', '2026-03-01 12:37:45', '2026-04-01 23:00:00', 'approved'),
+(59, 4, 1, 'Cleaner (Campus)', 'Evening cleaning in student spaces and halls.', 'part-time', 10.50, 11.00, 'GBP', 'hourly', 'onsite', 'Wolverhampton Campus', 'WV1 1LY', 52.587000, -2.128000, 'https://apply.local/jobs/54', '2026-02-23 12:37:45', '2026-04-06 23:00:00', 'approved'),
+(60, 6, 2, 'Gym Membership Sales', 'Sign up members, answer enquiries, basic tour.', 'contract', 12.00, 14.00, 'GBP', 'hourly', 'onsite', 'Telford Fitness Centre', 'TF2 9NT', 52.676600, -2.446600, 'https://apply.local/jobs/55', '2026-02-25 12:37:45', '2026-03-29 00:00:00', 'approved'),
+(61, 8, 1, 'Warehouse Operative (Rejected Demo)', 'Demo rejected job for moderation flow.', 'temporary', 11.00, 12.00, 'GBP', 'hourly', 'onsite', 'Wolverhampton Depot', 'WV10 7EL', 52.620000, -2.110000, 'https://apply.local/jobs/56', '2026-03-02 12:37:45', '2026-03-23 00:00:00', 'rejected'),
+(62, 3, 2, 'Delivery Driver Helper (Draft)', 'Draft listing demo.', 'casual', 11.00, 12.00, 'GBP', 'hourly', 'onsite', 'Telford Depot', 'TF3 3AA', 52.676900, -2.448000, 'https://apply.local/jobs/57', '2026-03-02 12:37:45', '2026-03-23 00:00:00', 'draft'),
+(63, 5, 1, 'Systems Admin Trainee (Pending)', 'Pending listing demo.', 'internship', NULL, NULL, 'GBP', 'salary', 'hybrid', 'Wolverhampton Campus', 'WV1 1LY', 52.587000, -2.128000, 'https://apply.local/jobs/58', '2026-03-01 12:37:45', '2026-04-16 23:00:00', 'rejected'),
+(64, 7, 1, 'Video Editor (Approved)', 'Edit short-form videos, captions, exports.', 'part-time', 13.00, 18.00, 'GBP', 'hourly', 'remote', NULL, NULL, NULL, NULL, 'https://apply.local/jobs/59', '2026-02-28 12:37:45', '2026-04-21 23:00:00', 'approved'),
+(65, 2, 1, 'Store Assistant (Closed)', 'Closed listing demo.', 'part-time', 10.50, 11.50, 'GBP', 'hourly', 'onsite', 'Wolverhampton Retail Park', 'WV10 6QJ', 52.615000, -2.105000, 'https://apply.local/jobs/60', '2026-01-22 12:37:45', '2026-02-26 00:00:00', 'closed');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `job_categories`
+--
+
+CREATE TABLE `job_categories` (
+  `category_id` bigint(20) UNSIGNED NOT NULL,
+  `category_name` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `job_categories`
+--
+
+INSERT INTO `job_categories` (`category_id`, `category_name`) VALUES
+(3, 'Admin'),
+(5, 'Care'),
+(11, 'Cleaning'),
+(12, 'Customer Service'),
+(6, 'Events'),
+(13, 'Fitness'),
+(2, 'Hospitality'),
+(9, 'Marketing'),
+(1, 'Retail'),
+(10, 'Security'),
+(7, 'Tech Support'),
+(8, 'Tutoring'),
+(4, 'Warehouse');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `job_category_map`
+--
+
+CREATE TABLE `job_category_map` (
+  `job_id` bigint(20) UNSIGNED NOT NULL,
+  `category_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `job_category_map`
+--
+
+INSERT INTO `job_category_map` (`job_id`, `category_id`) VALUES
+(1, 2),
+(2, 1),
+(3, 4),
+(4, 3),
+(5, 7),
+(6, 2),
+(7, 2),
+(8, 1),
+(9, 4),
+(10, 3),
+(11, 9),
+(12, 13),
+(13, 7),
+(14, 4),
+(15, 9),
+(16, 8),
+(17, 8),
+(18, 6),
+(19, 6),
+(20, 5),
+(21, 5),
+(22, 12),
+(23, 12),
+(24, 2),
+(25, 13),
+(26, 12),
+(27, 1),
+(28, 4),
+(29, 3),
+(30, 7),
+(31, 7),
+(32, 9),
+(33, 2),
+(34, 2),
+(35, 13),
+(36, 4),
+(37, 3),
+(38, 11),
+(39, 10),
+(40, 6),
+(41, 9),
+(42, 8),
+(43, 3),
+(44, 7),
+(45, 13),
+(46, 2),
+(47, 2),
+(48, 12),
+(49, 4),
+(50, 4),
+(51, 1),
+(52, 9),
+(53, 7),
+(54, 5),
+(55, 6),
+(56, 3),
+(57, 3),
+(58, 3),
+(59, 11),
+(60, 13),
+(61, 4),
+(62, 4),
+(63, 7),
+(64, 9),
+(65, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `job_moderation`
+--
+
+CREATE TABLE `job_moderation` (
+  `moderation_id` bigint(20) UNSIGNED NOT NULL,
+  `job_id` bigint(20) UNSIGNED NOT NULL,
+  `admin_user_id` bigint(20) UNSIGNED NOT NULL,
+  `decision` enum('approved','rejected') NOT NULL,
+  `reason` text DEFAULT NULL,
+  `decided_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `job_moderation`
+--
+
+INSERT INTO `job_moderation` (`moderation_id`, `job_id`, `admin_user_id`, `decision`, `reason`, `decided_at`) VALUES
+(1, 1, 1, 'approved', 'Meets listing requirements.', '2026-03-02 13:23:19'),
+(2, 2, 1, 'approved', 'Verified company and clear job details.', '2026-03-02 13:23:19'),
+(6, 6, 1, 'approved', 'Meets listing requirements.', '2026-02-21 12:37:45'),
+(7, 8, 1, 'approved', 'Verified company and clear job details.', '2026-02-19 12:37:45'),
+(8, 61, 1, 'rejected', 'Insufficient job details / duplicate posting.', '2026-03-02 12:37:45'),
+(9, 3, 1, 'approved', NULL, '2026-03-03 12:59:27'),
+(10, 4, 1, 'approved', NULL, '2026-03-03 12:59:28'),
+(11, 63, 1, 'rejected', NULL, '2026-03-03 12:59:37'),
+(12, 10, 1, 'approved', NULL, '2026-03-03 13:02:02'),
+(13, 29, 1, 'rejected', NULL, '2026-03-03 13:02:05'),
+(14, 41, 1, 'approved', NULL, '2026-03-03 13:40:26'),
+(15, 21, 1, 'approved', NULL, '2026-03-03 13:41:59'),
+(16, 9, 1, 'approved', NULL, '2026-03-03 15:02:56');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `saved_jobs`
+--
+
+CREATE TABLE `saved_jobs` (
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `job_id` bigint(20) UNSIGNED NOT NULL,
+  `saved_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `saved_jobs`
+--
+
+INSERT INTO `saved_jobs` (`user_id`, `job_id`, `saved_at`) VALUES
+(1, 2, '2026-03-03 21:53:03'),
+(1, 3, '2026-03-03 21:53:05'),
+(2, 2, '2026-03-03 21:48:35'),
+(2, 3, '2026-03-03 21:48:36'),
+(2, 35, '2026-03-03 21:49:31'),
+(2, 41, '2026-03-03 21:49:30'),
+(3, 1, '2026-03-02 13:23:19'),
+(3, 17, '2026-03-03 12:37:45'),
+(4, 26, '2026-03-03 12:37:45'),
+(5, 30, '2026-03-03 12:37:45'),
+(6, 42, '2026-03-03 12:37:45'),
+(7, 53, '2026-03-03 12:37:45'),
+(8, 46, '2026-03-03 12:37:45'),
+(9, 56, '2026-03-03 12:37:45'),
+(10, 57, '2026-03-03 12:37:45'),
+(11, 48, '2026-03-03 12:37:45');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `role` enum('student','company','admin') NOT NULL,
+  `name` varchar(150) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password_hash` varchar(255) DEFAULT NULL,
+  `password_updated_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`user_id`, `role`, `name`, `email`, `password_hash`, `password_updated_at`, `created_at`) VALUES
+(1, 'admin', 'Admin User', 'admin@wlv.example', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-02 13:23:19'),
+(2, 'student', 'Nico Bowen', 'nico@student.example', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-02 13:23:19'),
+(3, 'student', 'Aisha Khan', 'aisha@student.example', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-02 13:23:19'),
+(4, 'student', 'Tom Williams', 'tom@student.example', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-02 13:23:19'),
+(5, 'company', 'Sarah Patel', 'sarah@company.example', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-02 13:23:19'),
+(6, 'company', 'Mark Evans', 'mark@company.example', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-02 13:23:19'),
+(7, 'company', 'Helen Roberts', 'helen@company.example', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-02 13:23:19'),
+(8, 'admin', 'Admin User', 'admin@student_campus_hub.local', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-03 12:37:44'),
+(9, 'student', 'Nico Bowen', 'nico@student.local', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-03 12:37:44'),
+(10, 'student', 'Aisha Khan', 'aisha@student.local', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-03 12:37:44'),
+(11, 'student', 'Tom Williams', 'tom@student.local', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-03 12:37:44'),
+(12, 'student', 'Ella Johnson', 'ella@student.local', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-03 12:37:44'),
+(13, 'student', 'Bilal Hussain', 'bilal@student.local', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-03 12:37:44'),
+(14, 'student', 'Grace Taylor', 'grace@student.local', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-03 12:37:44'),
+(15, 'student', 'Ravi Patel', 'ravi@student.local', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-03 12:37:44'),
+(16, 'student', 'Megan Price', 'megan@student.local', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-03 12:37:44'),
+(17, 'student', 'Omar Ali', 'omar@student.local', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-03 12:37:44'),
+(18, 'student', 'Chloe Evans', 'chloe@student.local', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-03 12:37:44'),
+(19, 'company', 'Sarah Patel', 'sarah@wolvescoffee.local', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-03 12:37:44'),
+(20, 'company', 'Mark Evans', 'mark@midlandsretail.local', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-03 12:37:44'),
+(21, 'company', 'Helen Roberts', 'helen@telfordlogistics.local', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-03 12:37:44'),
+(22, 'company', 'James Carter', 'james@citybites.local', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-03 12:37:44'),
+(23, 'company', 'Priya Singh', 'priya@campusit.local', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-03 12:37:44'),
+(24, 'company', 'Daniel Green', 'daniel@fitwell.local', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-03 12:37:44'),
+(25, 'company', 'Sophie Turner', 'sophie@creativewv.local', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-03 12:37:44'),
+(26, 'company', 'Amir Khan', 'amir@warehousenation.local', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-03 12:37:44'),
+(27, 'company', 'Lucy Brown', 'lucy@studybuddy.local', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-03 12:37:44'),
+(28, 'company', 'Callum Wright', 'callum@eventcrew.local', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-03 12:37:44'),
+(29, 'company', 'Hannah Moore', 'hannah@careplus.local', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-03 12:37:44'),
+(30, 'company', 'Zara Ahmed', 'zara@transporthub.local', '$2b$10$lt1bEYzXTmNSyvYCaxePyOEDFrYdUawIE71YM0rBFmZIEcgCBuGom', '2026-03-03 13:23:51', '2026-03-03 12:37:44');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `campuses`
+--
+ALTER TABLE `campuses`
+  ADD PRIMARY KEY (`campus_id`),
+  ADD UNIQUE KEY `uq_campuses_name` (`campus_name`);
+
+--
+-- Indexes for table `companies`
+--
+ALTER TABLE `companies`
+  ADD PRIMARY KEY (`company_id`),
+  ADD UNIQUE KEY `uq_companies_user_id` (`user_id`);
+
+--
+-- Indexes for table `jobs`
+--
+ALTER TABLE `jobs`
+  ADD PRIMARY KEY (`job_id`),
+  ADD KEY `idx_jobs_status_posted_at` (`status`,`posted_at`),
+  ADD KEY `idx_jobs_campus` (`campus_id`),
+  ADD KEY `idx_jobs_company` (`company_id`);
+
+--
+-- Indexes for table `job_categories`
+--
+ALTER TABLE `job_categories`
+  ADD PRIMARY KEY (`category_id`),
+  ADD UNIQUE KEY `uq_job_categories_name` (`category_name`);
+
+--
+-- Indexes for table `job_category_map`
+--
+ALTER TABLE `job_category_map`
+  ADD PRIMARY KEY (`job_id`,`category_id`),
+  ADD KEY `idx_job_category_map_category` (`category_id`,`job_id`);
+
+--
+-- Indexes for table `job_moderation`
+--
+ALTER TABLE `job_moderation`
+  ADD PRIMARY KEY (`moderation_id`),
+  ADD KEY `fk_job_moderation_job` (`job_id`),
+  ADD KEY `fk_job_moderation_admin` (`admin_user_id`);
+
+--
+-- Indexes for table `saved_jobs`
+--
+ALTER TABLE `saved_jobs`
+  ADD PRIMARY KEY (`user_id`,`job_id`),
+  ADD KEY `idx_saved_jobs_user` (`user_id`),
+  ADD KEY `fk_saved_jobs_job` (`job_id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `uq_users_email` (`email`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `campuses`
+--
+ALTER TABLE `campuses`
+  MODIFY `campus_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `companies`
+--
+ALTER TABLE `companies`
+  MODIFY `company_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `jobs`
+--
+ALTER TABLE `jobs`
+  MODIFY `job_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+
+--
+-- AUTO_INCREMENT for table `job_categories`
+--
+ALTER TABLE `job_categories`
+  MODIFY `category_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `job_moderation`
+--
+ALTER TABLE `job_moderation`
+  MODIFY `moderation_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `user_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `companies`
+--
+ALTER TABLE `companies`
+  ADD CONSTRAINT `fk_companies_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `jobs`
+--
+ALTER TABLE `jobs`
+  ADD CONSTRAINT `fk_jobs_campus` FOREIGN KEY (`campus_id`) REFERENCES `campuses` (`campus_id`),
+  ADD CONSTRAINT `fk_jobs_company` FOREIGN KEY (`company_id`) REFERENCES `companies` (`company_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `job_category_map`
+--
+ALTER TABLE `job_category_map`
+  ADD CONSTRAINT `fk_job_category_map_category` FOREIGN KEY (`category_id`) REFERENCES `job_categories` (`category_id`),
+  ADD CONSTRAINT `fk_job_category_map_job` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `job_moderation`
+--
+ALTER TABLE `job_moderation`
+  ADD CONSTRAINT `fk_job_moderation_admin` FOREIGN KEY (`admin_user_id`) REFERENCES `users` (`user_id`),
+  ADD CONSTRAINT `fk_job_moderation_job` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `saved_jobs`
+--
+ALTER TABLE `saved_jobs`
+  ADD CONSTRAINT `fk_saved_jobs_job` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_saved_jobs_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+COMMIT;
