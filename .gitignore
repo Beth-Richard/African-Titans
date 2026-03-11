@@ -13,7 +13,7 @@
         #.env.local
         #.env.development.local
         #.env.test.local
-        #.env.*.local    - local only so not ignored by default - normal safety measures would not have this on git. 
+        #.env.*.local    - local only so not ignored by default - normal safety measures would not have this on git. gi
 
         #logs 
         log
