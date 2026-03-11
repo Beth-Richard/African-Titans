@@ -1,27 +1,26 @@
-Overview
+Student Campus Hub – MVP
 
+What this project is
 
-Student Campus Hub is a Next.js-based web platform designed to connect students with campus job opportunities.
+Student Campus Hub is a small web platform built using Next.js that connects students with job opportunities around their university campus.
 
-This MVP implements the Jobs module, including:
+This repository contains the first MVP version of the platform.
 
-Database-backed job listings
+At the moment the system includes:
 
-Student login and authentication
+Job listings pulled from a MySQL database
 
-Saved jobs functionality
+Student login functionality
 
-Admin job moderation
+Ability to save jobs
 
-API-driven architecture
+Admin job approval / moderation
 
+API routes for data handling
 
-
-The system is built collaboratively and structured to support future features and scaling.
+The project was built collaboratively and structured so additional features can be added in future sprints.
 
 Tech Stack
-
-
 Frontend
 
 Next.js (App Router)
@@ -32,69 +31,65 @@ TypeScript
 
 TailwindCSS
 
-
-
 Backend
 
 Next.js API Routes
 
 Node.js
 
-
-
 Database
 
 MySQL
 
-phpMyAdmin (local environment)
-
-
+phpMyAdmin (local development)
 
 Development Tools
 
 Git
 
-Visual Studio / VS Code
+VS Code
 
-PNPM / NPM
+npm / pnpm
 
 Project Structure
+
+Main folders in the project:
+
 African-Titans/
-│
-├── app/
-│   ├── api/                # Backend API routes
-│   │   ├── auth/           # Login/logout routes
-│   │   ├── jobs/           # Job endpoints
-│   │   ├── admin/          # Admin moderation endpoints
-│   │   └── profile/        # Saved jobs / profile routes
-│
-│   ├── login/              # Login page
-│   ├── jobs/               # Jobs UI
-│   └── admin/              # Admin dashboard
-│
-├── components/             # Reusable UI components
-├── lib/                    # Database + utilities
-│   ├── db.ts               # Database connection
-│   ├── types.ts            # Shared types
-│
-├── Database/
-│   └── phpMyAdmin SQL Dump.sql
-│
-├── public/                 # Static assets
-│
-├── package.json
-├── tsconfig.json
-└── README.md
+
+app/
+  api/
+    auth/        login / logout
+    jobs/        job endpoints
+    admin/       admin moderation
+    profile/     saved jobs
+
+  login/         login page
+  jobs/          jobs UI
+  admin/         admin dashboard
+
+components/      reusable UI components
+
+lib/
+  db.ts          database connection
+  types.ts       shared TypeScript types
+
+  Database/
+    phpMyAdmin SQL Dump.sql
+
+public/          static assets
+
+package.json
+tsconfig.json
+README.md
 Database Setup
 
-
-The database used for the application is:
+The application uses a MySQL database called:
 
 student_campus_hub
-Step 1 – Start Local Database
+Step 1 – Start MySQL
 
-
-Start your local MySQL environment using:
+Start your local database using something like:
 
 XAMPP
 
@@ -102,55 +97,47 @@ MAMP
 
 MySQL server
 
-
-
-Ensure phpMyAdmin is accessible.
-
-
-
-Example:
+Then open phpMyAdmin in your browser:
 
 http://localhost/phpmyadmin
-Step 2 – Create the Database
+Step 2 – Create the database
 
-
-In phpMyAdmin:
+Inside phpMyAdmin:
 
 Click New
 
-Create a database named:
+Create a database called:
 
 student_campus_hub
-Use:
+
+Use this collation:
 
 utf8mb4_general_ci
-as the collation.
+Step 3 – Import the schema
 
-Step 3 – Import Schema + Seed
+The database structure and seed data are provided in the SQL dump located here:
 
+lib/Database/phpMyAdmin SQL Dump.sql
 
-Navigate to:
-
-Database/phpMyAdmin SQL Dump.sql
-Then:
+To import it:
 
 Select the student_campus_hub database
 
 Click Import
 
-Upload the SQL dump
+Upload the SQL file
 
-Run import
+Run the import
 
-
-
-This will create:
+This will automatically create all tables including:
 
 campuses
 
-jobs
+users
 
 companies
+
+jobs
 
 job_categories
 
@@ -158,109 +145,101 @@ job_category_map
 
 job_moderation
 
-users
-
 saved_jobs
 
+It also includes seed data for development.
 
+Environment Variables
 
-and insert seed data for development.
-
-Environment Setup
-
-
-Create a local environment file.
+Create a file in the root of the project called:
 
 .env.local
-Example configuration:
+
+Add the following database configuration:
 
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=
 DB_NAME=student_campus_hub
-This file is not committed to Git for security reasons.
+
+This file is not pushed to GitHub.
 
 Installing the Project
 
-
 Clone the repository:
 
-git clone <repo-url>
-Navigate into the project:
+git clone <repository-url>
+
+Move into the project folder:
 
 cd African-Titans
+
 Install dependencies:
 
 npm install
-or if using PNPM:
+
+or
 
 pnpm install
-Running the Application
-
+Running the Project
 
 Start the development server:
 
 npm run dev
-The app will run at:
+
+The application should now be available at:
 
 http://localhost:3000
 Authentication
 
+The system currently includes a simple login system.
 
-The application includes a basic authentication system.
-
-
-
-Features:
+Features implemented:
 
 Login route
 
-Logout functionality
+Logout route
 
-Password hashing for security
+Current user endpoint
 
-Current user endpoint (/api/me)
+Password hashing
 
-
-
-Authentication routes:
+API routes used:
 
 /api/auth/login
 /api/auth/logout
 /api/me
-Passwords are hashed before comparison with stored values.
+
+Passwords are hashed before being compared with database values.
 
 API Routes
-
-
 Jobs
 GET /api/jobs
 GET /api/jobs/[id]
 POST /api/jobs/batch
-Admin
+Admin Moderation
 GET /api/admin/jobs
 POST /api/admin/jobs/moderate
-Admin endpoints allow moderation of job listings.
 
-Profile
+Admins can approve or reject job listings before they appear publicly.
+
+Profile / Saved Jobs
 GET /api/profile/saved
 POST /api/profile/saved
-Allows users to save and retrieve job listings.
 
-Main Features (MVP1)
+Students can save job listings to their profile.
 
+MVP Features
 
-Jobs Module
+Current MVP includes:
 
-Browse job listings
+Job Listings
 
-View individual job details
+Browse jobs
 
-Save jobs to profile
+View job details
 
-Admin moderation system
-
-
+Save jobs
 
 Authentication
 
@@ -268,49 +247,58 @@ Login
 
 Logout
 
-User session retrieval
+Retrieve logged-in user
 
+Admin Controls
 
+Job moderation
+
+Approval / rejection
 
 Database Integration
 
-MySQL-backed data
+MySQL database
 
-API driven data access
+API-driven data access
 
 Development Notes
 
+The following folders/files are ignored by Git:
 
-Ignored directories:
-
-node_modules/
-.next/
-.vs/
+node_modules
+.next
+.vs
 .env.local
-These are excluded from Git to prevent unnecessary files being committed.
+
+These contain local or generated files and should not be committed.
 
 How to Contribute
-Pull latest changes
 
-git pull origin developers
-Create a feature branch
+Pull the latest version of the dev branch:
 
-git checkout -b feature/my-feature
-Commit changes
+git pull origin dev
 
-git commit -m "feat: add feature"
-Push branch
+Create a new branch for your feature:
 
-git push origin feature/my-feature
-Open Pull Request
+git checkout -b feature/your-feature
 
-MVP Status
+Commit your changes:
 
+git commit -m "add feature"
+
+Push your branch:
+
+git push origin feature/your-feature
+
+Then open a Pull Request.
+
+Current Project Status
 
 Current milestone:
 
-MVP1 – Jobs Platform Core
-Completed:
+MVP1 – Core Jobs Platform
+
+Completed so far:
 
 Database schema
 
@@ -318,36 +306,34 @@ Seed data
 
 Job listing API
 
-Authentication
+Login system
 
-Saved jobs system
+Saved jobs feature
 
 Admin moderation
 
 UI integration
 
-Future Work
+Planned Improvements
 
+Possible features for future sprints:
 
-Planned improvements include: (sprint 2 or 1 pm team agree) 
+Student registration
 
-Registration Page - Students & Companies 
+Company registration
 
-Improved authentication/session management - currently works. 
+Improved session handling
 
-Notifications - logged in/ logged out/ job saved 
+Notifications
 
-UI refinement - log in page - can see more after testing
+UI improvements
 
-Deployment environment when running 
+Deployment
 
 Authors
 
+Nico Bowen
+African Titans Development Team
 
-Nico Bowen 
-
-African Titans Dev Team
-
-
-
-Computer Science – Collaborative Development 
+University of Wolverhampton
+Computer Science – Collaborative Development
