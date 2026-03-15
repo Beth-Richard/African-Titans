@@ -43,7 +43,7 @@ export async function POST(req: Request) {
     httpOnly: true,
     sameSite: "lax",
     path: "/",
-    // secure: true, // enable when using https
+    secure: process.env.NODE_ENV === "production",
   });
 
   return res;

@@ -269,13 +269,13 @@ ORDER BY j.posted_at DESC
 export async function moderateJob(
     jobIdInput: string,
     decision: "approved" | "rejected",
-    reason?: string
+    reason?: string,
+    adminUserId?: number
 ): Promise<void> {
     const jobId = parseJobId(jobIdInput);
     if (!jobId) throw new Error("Invalid jobId");
 
-    // MVP: hardcode admin user_id = 1 (your seeded admin)
-    const ADMIN_USER_ID = 1;
+    const resolvedAdminId = adminUserId ?? 1; // fallback for legacy calls
 
     // Update job status
     await db.query(
@@ -286,6 +286,6 @@ export async function moderateJob(
     // Write moderation record
     await db.query(
         `INSERT INTO job_moderation (job_id, admin_user_id, decision, reason) VALUES (?, ?, ?, ?)`,
-        [jobId, ADMIN_USER_ID, decision, reason ?? null]
+        [jobId, resolvedAdminId, decision, reason ?? null]
     );
 }
