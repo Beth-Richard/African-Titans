@@ -57,5 +57,4 @@ To apply this to our project, we can think of it as a phased, layered approach:
 2.	Build a Segmented Foundation: Design the network from the ground up with segmentation in mind. Create separate VLANs for students, staff, guests, IoT devices (like smart boards or sensors), and critical systems .
 3.	Implement Strong Gatekeeping: Deploy a Network Access Control (NAC) solution to enforce your segmentation. Every device must authenticate and be authorized before it can join its designated segment .
 4.	Enforce the Rules: Use Access Control Lists (ACLs) and Firewalls to strictly control the traffic allowed between these segments. A student device should only be able to communicate with the internet and perhaps a printer, not with administrative servers .
-5.	Empower Your Team: Don't forget the human element. Budget for and prioritize continuous training for your IT staff so they can manage, monitor, and evolve this complex environment effectively .
- 
+
