@@ -44,7 +44,7 @@ Here is a breakdown of the essential cybersecurity components for our project,
 
 Core Cybersecurity Frameworks
 
-•	Zero Trust Architecture (ZTA) : This is the overarching security model. It operates on "never trust, always verify.
+•	Zero Trust Architecture (ZTA) : This is the a security model. It operates on "never trust, always verify.
 " This means continuously authenticating and authorizing every user and device, enforcing least-privilege access, and assuming the network is always hostile .
 •	NIST Cybersecurity Framework (CSF) : This is a vital policy and risk management framework. 
 It helps us understand, manage, and reduce cybersecurity risk by guiding us through the core functions: Identify, Protect, Detect, Respond, and Recover .
