@@ -70,8 +70,8 @@ This plan should be regularly tested and updated .
 Tying It All Together for our Student Hub
 
 To apply this to our project, we can think of it as a phased, layered approach:
-1.	Start with a Plan: Use the NIST Cybersecurity Framework to conduct a risk assessment. What data are you protecting?
-What are the biggest threats to your hub? This will guide all our other decisions .
+1.	Start with a Plan: Use the NIST Cybersecurity Framework to conduct a risk assessment. What data are we protecting?
+What are the biggest threats to our hub? This will guide all our other decisions .
 2.	Build a Segmented Foundation: Design the network from the ground up with segmentation in mind.
 Create separate VLANs for students, staff, guests, and critical systems .
 3.	Implement Strong Gatekeeping: Deploy a Network Access Control (NAC) solution to enforce our segmentation.
