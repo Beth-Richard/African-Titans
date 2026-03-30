@@ -1,0 +1,88 @@
+Project Title: Student Campus Hub Version:
+ First Proposal Prepared by: Ali Salih
+ University of Wolverhampton Document Type: Project Proposal (MMP Stage)
+Project Title: Student Campus Hub – Jobs Module Version: 
+1. Project Overview
+The Student Campus Hub (Jobs Module) is a digital platform designed to help University of Wolverhampton students find part time, flexible, and campus friendly job opportunities. The system connects students with verified employers and provides a simple, user friendly interface for browsing, filtering, and saving job listings.
+This proposal outlines the scope of the Minimum Marketable Product (MMP) for the Jobs Module only, focusing on delivering a polished, stable, and market ready version of the job search functionality.
+2. Project Objectives
+The Jobs Module MMP aims to:
+•	Provide a fully functional and user friendly job search system.
+•	Improve the database schema to support real world job listings.
+•	Deliver complete end to end user flows for browsing, filtering, saving, and viewing jobs.
+•	Strengthen admin tools for job approval and moderation.
+•	Ensure data accuracy, performance, and security.
+•	Prepare the system for real student usage across all campuses.
+3. Scope of the MMP (Jobs Only)
+The MMP includes all essential features required for a complete job search experience.
+3.1 Student Facing Features
+Job Listings
+•	View all available jobs
+•	Pagination or infinite scroll
+•	Display job title, company, salary, location, and deadline
+Job Search & Filters
+•	Search by keyword
+•	Filter by:
+o	Campus (Wolverhampton, Telford, Walsall)
+o	Job type (FT, PT, Seasonal, Internship)
+o	Salary range
+o	Field of study
+Job Details Page
+•	Full job description
+•	Salary and salary type
+•	Company information
+•	Application deadline
+•	Travel time
+•	Remote option
+Save Jobs
+•	Bookmark jobs
+•	View saved jobs in the profile
+3.2 Admin Facing Features
+Job Approval Workflow
+•	View pending job submissions
+•	Approve or reject jobs
+•	Add rejection reason
+•	Track approval history
+Job Management
+•	Edit job listings
+•	Remove outdated or invalid jobs
+•	View job statistics (optional)
+4. Improved Database Schema (Jobs Only MMP)
+The MMP requires a more robust and scalable database for the Jobs Module.
+Key Enhancements
+•	New fields: SalaryType, Campus, CompanyLogo, ApprovedByAdmin
+•	New table: SavedJobs
+•	Improved constraints and validation
+•	Indexes for faster search and filtering
+•	Better foreign key relationships
+•	Realistic seed data for testing
+Core Tables
+•	Students
+•	Companies
+•	Jobs
+•	Applications
+•	Saved Jobs
+This ensures the system supports real world usage and admin workflows.
+5. Target Users
+Primary Users
+•	University of Wolverhampton students seeking part time or flexible work
+Secondary Users
+•	Employers posting job opportunities
+•	University administrators moderating job listings
+6. Expected Outcomes
+By completing the MMP for the Jobs Module, the project will deliver:
+•	A polished, stable, and user ready job search platform
+•	A scalable and secure database
+•	Fully functional admin approval workflow
+•	Improved student engagement with job opportunities
+•	A foundation for future expansion (employer portal, analytics, mobile app)
+7. Project Deliverables
+•	Updated MMP database schema (Jobs only)
+•	Updated ERD and Data Dictionary
+•	Fully functional Jobs module (search, filter, save, view)
+•	Admin dashboard for job moderation
+•	GitHub repository updated with documentation and schema
+•	Testing documentation and user feedback summary
+8. Conclusion
+The Student Campus Hub (Jobs Module) MMP focuses on delivering a complete, market ready job search experience for students. By improving the database schema, enhancing user experience, and strengthening admin tools, the system will provide real value to students and employers across the university.
+
