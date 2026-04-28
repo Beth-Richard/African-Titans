@@ -1,12 +1,16 @@
-Inserting Real Jobs (MMP) Database Development. 
+Inserting Real Jobs (MMP) Database Development. (updated v2.1) 
 
 This file allows update of database for our MMP and testing for students. Please follow instructions to insert REAL jobs into the system correctly. 
-If you have the previous files in the database, then please run this scripts below:
+*updated for correct mapping rules. 
+Previously, jobs were linked to companies and categories using fixed IDs, which could change and cause mismatches. To prevent this, we now use rules that look at the job title to decide the correct category and automatically link jobs to the correct company during setup. This keeps the data consistent across different setups.
+
+If you have the previous files in the database, then please run these scripts below:
 
 1.	Clears everything inserts real jobs and category’s 
 2.	Run Script
 3.	Re-Map job-to-Categories 
-----------------------------------------------------------------------------------------------------------------------------------------------
+4.	Add more jobs
+
 START TRANSACTION;
 
 -- =====================================================
@@ -239,137 +243,199 @@ DELETE FROM job_category_map;
 COMMIT;
 Re-Map Categories 
 
-START TRANSACTION;
+Map to Jobs with keywords (better improved) 
 
 INSERT INTO job_category_map (job_id, category_id)
 SELECT
   j.job_id,
   CASE
     -- WAREHOUSE
-    WHEN j.title LIKE '%Warehouse%' THEN 4
+    WHEN j.title REGEXP '(Warehouse|Picker|Packer|Stockroom|Inventory)' THEN 4
+
+    -- CARE (MUST come before Tech Support)
+    WHEN j.title REGEXP '(Care|Support Worker|Healthcare)' THEN 5
 
     -- RETAIL
-    WHEN j.title LIKE '%Retail%' OR j.title LIKE '%Sales%' OR j.title LIKE '%Store%' THEN 1
+    WHEN j.title REGEXP '(Retail|Sales|Store|Customer Service)' THEN 1
 
     -- HOSPITALITY
-    WHEN j.title LIKE '%Barista%' 
-      OR j.title LIKE '%Café%' 
-      OR j.title LIKE '%Front of House%' 
-      OR j.title LIKE '%Waiting%' 
-      OR j.title LIKE '%Kitchen%' THEN 2
-
-    -- TECH SUPPORT
-    WHEN j.title LIKE '%IT%' 
-      OR j.title LIKE '%Tech%' 
-      OR j.title LIKE '%Support%' 
-      OR j.title LIKE '%Lab%' THEN 7
-
-    -- TUTORING
-    WHEN j.title LIKE '%Tutor%' 
-      OR j.title LIKE '%Teaching%' 
-      OR j.title LIKE '%SEND%' THEN 8
-
-    -- CARE
-    WHEN j.title LIKE '%Care%' 
-      OR j.title LIKE '%Support Worker%' THEN 5
+    WHEN j.title REGEXP '(Barista|Cafe|Café|Waiting|Kitchen|Catering)' THEN 2
 
     -- EVENTS
-    WHEN j.title LIKE '%Event%' 
-      OR j.title LIKE '%Steward%' 
-      OR j.title LIKE '%Crew%' THEN 6
+    WHEN j.title REGEXP '(Event|Events|Steward|Crew|Conference)' THEN 6
 
     -- FITNESS
-    WHEN j.title LIKE '%Gym%' 
-      OR j.title LIKE '%Fitness%' 
-      OR j.title LIKE '%Personal Trainer%' THEN 13
+    WHEN j.title REGEXP '(Gym|Fitness|Receptionist|Personal Trainer)' THEN 13
 
     -- CLEANING
-    WHEN j.title LIKE '%Cleaner%' 
-      OR j.title LIKE '%Cleaning%' THEN 11
+    WHEN j.title REGEXP '(Cleaner|Cleaning)' THEN 11
 
-    -- MARKETING
-    WHEN j.title LIKE '%Marketing%' 
-      OR j.title LIKE '%Content%' 
-      OR j.title LIKE '%Copy%' 
-      OR j.title LIKE '%Social%' THEN 9
-
-    -- SECURITY
-    WHEN j.title LIKE '%Security%' THEN 10
-
-    -- CUSTOMER SERVICE (DEFAULT SAFE FALLBACK)
-    ELSE 12
-  END AS category_id
-FROM jobs j;
-
-COMMIT;
-Map to Jobs with keywords 
-
-START TRANSACTION;
-
-INSERT INTO job_category_map (job_id, category_id)
-SELECT
-  j.job_id,
-  CASE
-    -- WAREHOUSE
-    WHEN j.title LIKE '%Manufacturing%'
-    OR j.title LIKE '%Warehouse%' THEN 4
-    
-
-    -- RETAIL
-    WHEN j.title LIKE '%Retail%' 
-    OR j.title LIKE '%Sales%' 
-    OR j.title LIKE '%Store%' THEN 1
-
-    -- HOSPITALITY
-    WHEN j.title LIKE '%Barista%' 
-      OR j.title LIKE '%Café%' 
-      OR j.title LIKE '%Front of House%' 
-      OR j.title LIKE '%Waiting%' 
-      OR j.title LIKE '%Kitchen%' THEN 2
-
-    -- TECH SUPPORT
-    WHEN j.title LIKE '%IT%' 
-      OR j.title LIKE '%Tech%' 
-      OR j.title LIKE '%Support%' 
-      OR j.title LIKE '%Lab%' THEN 7
+    -- TECH SUPPORT (AFTER Care & General Support)
+    WHEN j.title REGEXP '(IT|Tech|Helpdesk|Lab|System)' THEN 7
 
     -- TUTORING
-    WHEN j.title LIKE '%Tutor%' 
-      OR j.title LIKE '%Teaching%' 
-      OR j.title LIKE '%SEND%' THEN 8
-
-    -- CARE
-    WHEN j.title LIKE '%Care%' 
-      OR j.title LIKE '%Support Worker%' THEN 5
-
-    -- EVENTS
-    WHEN j.title LIKE '%Event%' 
-      OR j.title LIKE '%Steward%' 
-      OR j.title LIKE '%Crew%' THEN 6
-
-    -- FITNESS
-    WHEN j.title LIKE '%Gym%' 
-      OR j.title LIKE '%Fitness%' 
-      OR j.title LIKE '%Personal Trainer%' THEN 13
-
-    -- CLEANING
-    WHEN j.title LIKE '%Cleaner%' 
-      OR j.title LIKE '%Cleaning%' THEN 11
+    WHEN j.title REGEXP '(Tutor|Tutoring|Teaching|SEND|Study)' THEN 8
 
     -- MARKETING
-    WHEN j.title LIKE '%Marketing%' 
-      OR j.title LIKE '%Content%' 
-      OR j.title LIKE '%Copy%' 
-      OR j.title LIKE '%Social%' THEN 9
+    WHEN j.title REGEXP '(Marketing|Content|Social|Media|Copy)' THEN 9
 
     -- SECURITY
-    WHEN j.title LIKE '%Security%' THEN 10
+    WHEN j.title REGEXP '(Security|Guard)' THEN 10
 
-    -- CUSTOMER SERVICE (DEFAULT SAFE FALLBACK)
+    -- FALLBACK
     ELSE 12
-  END AS category_id
+  END
 FROM jobs j;
 
-COMMIT;
 Suggestions: 
-Remove apply by date – 
+Remove apply by date –  
+Extra jobs –
+START TRANSACTION;
+
+/* =====================================================
+   ADDITIONAL REAL JOBS – NO DELETES, NO RESETS
+   ===================================================== */
+
+/* -------------------------
+   WOLVERHAMPTON (campus_id = 1)
+   ------------------------- */
+
+-- Customer Service Assistant
+INSERT INTO jobs (
+company_id, campus_id, title, description, employment_type,
+pay_min, pay_max, currency, pay_type, remote_type,
+location_text, postcode, lat, lng, apply_url, status
+)
+SELECT c.company_id, 1,
+'Customer Service Assistant',
+'Handle customer enquiries, basic admin and in store support.',
+'part-time', 11.50, 13.00, 'GBP', 'hourly', 'onsite',
+'Wolverhampton Retail Park', 'WV10',
+52.6150, -2.1050,
+'https://uk.indeed.com/q-part-time-customer-service-l-wolverhampton-jobs.html',
+'approved'
+FROM companies c
+WHERE c.company_name = 'Midlands Retail Group';
+
+-- Evening Cleaner (Pending)
+INSERT INTO jobs (
+company_id, campus_id, title, description, employment_type,
+pay_min, pay_max, currency, pay_type, remote_type,
+location_text, postcode, lat, lng, apply_url, status
+)
+SELECT c.company_id, 1,
+'Evening Cleaner (Pending)',
+'Evening cleaning of student and office areas.',
+'part-time', 10.50, 11.00, 'GBP', 'hourly', 'onsite',
+'Wolverhampton Campus', 'WV1',
+52.5870, -2.1280,
+'https://uk.indeed.com/q-part-time-cleaner-l-wolverhampton-jobs.html',
+'pending'
+FROM companies c
+WHERE c.company_name = 'City Bites Catering';
+
+-- Events Assistant
+INSERT INTO jobs (
+company_id, campus_id, title, description, employment_type,
+pay_min, pay_max, currency, pay_type, remote_type,
+location_text, postcode, lat, lng, apply_url, status
+)
+SELECT c.company_id, 1,
+'Events Assistant',
+'Support open days and campus events, setup and guest support.',
+'temporary', 11.50, 13.00, 'GBP', 'hourly', 'onsite',
+'Wolverhampton City Campus', 'WV1',
+52.5870, -2.1280,
+'https://uk.indeed.com/q-part-time-events-l-wolverhampton-jobs.html',
+'approved'
+FROM companies c
+WHERE c.company_name = 'EventCrew West Midlands';
+
+/* -------------------------
+   TELFORD (campus_id = 2)
+   ------------------------- */
+
+-- Stockroom Assistant
+INSERT INTO jobs (
+company_id, campus_id, title, description, employment_type,
+pay_min, pay_max, currency, pay_type, remote_type,
+location_text, postcode, lat, lng, apply_url, status
+)
+SELECT c.company_id, 2,
+'Stockroom Assistant',
+'Receive deliveries, organise stock, assist shop floor.',
+'part-time', 11.00, 12.00, 'GBP', 'hourly', 'onsite',
+'Telford Shopping Centre', 'TF3',
+52.6784, -2.4453,
+'https://uk.indeed.com/q-part-time-stockroom-l-telford-jobs.html',
+'approved'
+FROM companies c
+WHERE c.company_name = 'Midlands Retail Group';
+
+-- Gym Receptionist (Pending)
+INSERT INTO jobs (
+company_id, campus_id, title, description, employment_type,
+pay_min, pay_max, currency, pay_type, remote_type,
+location_text, postcode, lat, lng, apply_url, status
+)
+SELECT c.company_id, 2,
+'Gym Receptionist (Pending)',
+'Front desk support, membership enquiries and bookings.',
+'part-time', 11.00, 12.50, 'GBP', 'hourly', 'onsite',
+'Telford Fitness Centre', 'TF2',
+52.6766, -2.4466,
+'https://uk.indeed.com/q-part-time-gym-receptionist-l-telford-jobs.html',
+'pending'
+FROM companies c
+WHERE c.company_name = 'FitWell Gyms';
+
+/* -------------------------
+   WALSALL (campus_id = 3)
+   ------------------------- */
+
+-- Waiting Staff
+INSERT INTO jobs (
+company_id, campus_id, title, description, employment_type,
+pay_min, pay_max, currency, pay_type, remote_type,
+location_text, postcode, lat, lng, apply_url, status
+)
+SELECT c.company_id, 3,
+'Waiting Staff (Evenings)',
+'Serve tables during evening service and weekends.',
+'part-time', 10.50, 12.50, 'GBP', 'hourly', 'onsite',
+'Walsall Town Centre', 'WS1',
+52.5859, -1.9832,
+'https://uk.indeed.com/q-part-time-waiting-staff-l-walsall-jobs.html',
+'approved'
+FROM companies c
+WHERE c.company_name = 'City Bites Catering';
+
+-- Care Support Worker
+INSERT INTO jobs (
+company_id, campus_id, title, description, employment_type,
+pay_min, pay_max, currency, pay_type, remote_type,
+location_text, postcode, lat, lng, apply_url, status
+)
+SELECT c.company_id, 3,
+'Care Support Worker (Weekends)',
+'Support clients with daily living tasks during weekends.',
+'part-time', 12.50, 14.50, 'GBP', 'hourly', 'onsite',
+'Walsall', 'WS1',
+52.5853, -1.9840,
+'https://uk.indeed.com/q-part-time-care-assistant-l-walsall-jobs.html',
+'approved'
+FROM companies c
+WHERE c.company_name = 'CarePlus Support';
+
+COMMIT;
+Verify job matches all categories
+
+SELECT
+  j.job_id,
+  j.title,
+  jc.category_name
+FROM jobs j
+LEFT JOIN job_category_map m ON j.job_id = m.job_id
+LEFT JOIN job_categories jc ON m.category_id = jc.category_id
+ORDER BY j.job_id;
+
