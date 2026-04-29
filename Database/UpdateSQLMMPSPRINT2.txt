@@ -429,6 +429,30 @@ SELECT c.company_id, 3,
 FROM companies c
 WHERE c.company_name = 'CarePlus Support';
 
+Final map ---------------------------------------------------------------------------------------------------------------------------------------------------
+-- FINAL REMAP AFTER ALL JOB INSERTS 
+DELETE FROM job_category_map;
+
+INSERT INTO job_category_map (job_id, category_id)
+SELECT
+  j.job_id,
+  CASE
+    WHEN j.title REGEXP '(Warehouse|Picker|Packer|Stockroom|Inventory)' THEN 4
+    WHEN j.title REGEXP '(Care|Support Worker|Healthcare)' THEN 5
+    WHEN j.title REGEXP '(Retail|Sales|Store|Customer Service)' THEN 1
+    WHEN j.title REGEXP '(Barista|Cafe|Café|Waiting|Kitchen|Catering)' THEN 2
+    WHEN j.title REGEXP '(Event|Events|Steward|Crew|Conference)' THEN 6
+    WHEN j.title REGEXP '(Gym|Fitness|Receptionist|Personal Trainer)' THEN 13
+    WHEN j.title REGEXP '(Cleaner|Cleaning)' THEN 11
+    WHEN j.title REGEXP '(IT|Tech|Helpdesk|Lab|System)' THEN 7
+    WHEN j.title REGEXP '(Tutor|Tutoring|Teaching|SEND|Study)' THEN 8
+    WHEN j.title REGEXP '(Marketing|Content|Social|Media|Copy)' THEN 9
+    WHEN j.title REGEXP '(Security|Guard)' THEN 10
+    ELSE 12
+  END
+FROM jobs j;
+
+
 COMMIT;
 Verify job matches all categories
 
