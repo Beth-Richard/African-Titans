@@ -21,8 +21,6 @@ export async function POST(req: Request) {
     const email = (body.email as string | undefined)?.trim().toLowerCase();
     const password = body.password as string | undefined;
     const role = body.role as Role | undefined;
-    const companyName = (body.companyName as string | undefined)?.trim() ?? null;
-
     if (!name || !email || !password || !role) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
@@ -47,8 +45,8 @@ export async function POST(req: Request) {
     const passwordHash = await bcrypt.hash(password, 10);
 
     const [result] = await db.query<ResultSetHeader>(
-      `INSERT INTO users (name, email, password_hash, role, company_name) VALUES (?, ?, ?, ?, ?)`,
-      [name, email, passwordHash, role, companyName]
+      `INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)`,
+      [name, email, passwordHash, role]
     );
 
     return NextResponse.json(
