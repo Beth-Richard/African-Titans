@@ -86,8 +86,8 @@ export function Header() {
                         );
                     })}
 
-                    {/* Login/Logout (desktop) */}
-                    <div className="ml-2">
+                    {/* Login/Register/Logout (desktop) */}
+                    <div className="ml-2 flex items-center gap-2">
                         {me ? (
                             <button
                                 onClick={handleLogout}
@@ -97,13 +97,21 @@ export function Header() {
                                 Logout
                             </button>
                         ) : (
-                            <Link
-                                href="/login"
-                                className="flex items-center gap-2 rounded-md border border-primary-foreground/20 px-3 py-2 text-sm hover:bg-primary-foreground/10"
-                            >
-                                <User className="h-4 w-4" />
-                                Login
-                            </Link>
+                            <>
+                                <Link
+                                    href="/login"
+                                    className="flex items-center gap-2 rounded-md border border-primary-foreground/20 px-3 py-2 text-sm hover:bg-primary-foreground/10"
+                                >
+                                    <User className="h-4 w-4" />
+                                    Login
+                                </Link>
+                                <Link
+                                    href="/register"
+                                    className="flex items-center gap-2 rounded-md bg-secondary px-3 py-2 text-sm font-semibold text-secondary-foreground hover:bg-secondary/90"
+                                >
+                                    Register
+                                </Link>
+                            </>
                         )}
                     </div>
                 </nav>
@@ -145,8 +153,8 @@ export function Header() {
                             );
                         })}
 
-                        {/* Login/Logout (mobile) */}
-                        <div className="pt-2">
+                        {/* Login/Register/Logout (mobile) */}
+                        <div className="pt-2 space-y-1">
                             {me ? (
                                 <button
                                     onClick={handleLogout}
@@ -156,14 +164,23 @@ export function Header() {
                                     Logout
                                 </button>
                             ) : (
-                                <Link
-                                    href="/login"
-                                    onClick={() => setMobileOpen(false)}
-                                    className="flex items-center gap-2 rounded-md border border-primary-foreground/20 px-3 py-2.5 text-sm hover:bg-primary-foreground/10"
-                                >
-                                    <User className="h-4 w-4" />
-                                    Login
-                                </Link>
+                                <>
+                                    <Link
+                                        href="/login"
+                                        onClick={() => setMobileOpen(false)}
+                                        className="flex items-center gap-2 rounded-md border border-primary-foreground/20 px-3 py-2.5 text-sm hover:bg-primary-foreground/10"
+                                    >
+                                        <User className="h-4 w-4" />
+                                        Login
+                                    </Link>
+                                    <Link
+                                        href="/register"
+                                        onClick={() => setMobileOpen(false)}
+                                        className="flex items-center gap-2 rounded-md bg-secondary px-3 py-2.5 text-sm font-semibold text-secondary-foreground hover:bg-secondary/90"
+                                    >
+                                        Register
+                                    </Link>
+                                </>
                             )}
                         </div>
 
