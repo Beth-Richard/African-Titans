@@ -143,6 +143,13 @@ export default function LoginPage() {
                         . Use the test credentials provided by your team to log in.
                     </p>
 
+                    <p className="mt-3 text-center text-xs text-muted-foreground">
+                        Don&apos;t have an account?{" "}
+                        <Link href="/register" className="font-medium text-primary hover:underline">
+                            Register
+                        </Link>
+                    </p>
+
                 </div>
             </div>
         </main>
